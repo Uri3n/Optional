@@ -2,6 +2,7 @@
 #define OPTIONAL_HPP
 #include <cstdint>
 #include <type_traits>
+#include <iostream>
 #include <new>
 #include <utility>
 #include <memory>
@@ -160,11 +161,12 @@ public:
   auto has_value() const -> bool { return has_value_; }
   explicit operator bool() const { return has_value_; }
 
-  ALWAYS_INLINE Optional()                 : has_value_(false) {}
-  ALWAYS_INLINE Optional(const __Nullopt&) : has_value_(false) {}
+  Optional()                 : has_value_(false) {}
+  Optional(const __Nullopt&) : has_value_(false) {}
+ ~Optional() { clear(); }
 private:
   bool has_value_;
-  alignas(T) uint8_t value_[ sizeof(T) ];
+  alignas(T) uint8_t value_[ sizeof(T) ]{};
 };
 
 #endif //OPTIONAL_HPP
